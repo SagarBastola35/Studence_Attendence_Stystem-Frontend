@@ -4,11 +4,12 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import axios from 'axios';
 import App from "./App.js;
-// TEMPORARY: Hardcode the production URL
+
+// DIRECT HARDCODE - NO ENVIRONMENT VARIABLES
 const API_URL = 'https://studence-attendence-stystem-backend-3.onrender.com/api';
 axios.defaults.baseURL = API_URL;
 
-console.log('🚀 API URL:', API_URL);
+console.log('🚀 FORCED API URL:', API_URL);
 
 // Add token to all requests
 axios.interceptors.request.use(
@@ -27,7 +28,6 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
   (response) => response,
   (error) => {
-    console.error('📥 Response Error:', error.response?.status, error.config?.url);
     if (error.response?.status === 401) {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
@@ -35,7 +35,7 @@ axios.interceptors.response.use(
     }
     return Promise.reject(error);
   }
-);
+)
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <App />
