@@ -12,31 +12,12 @@ export default defineConfig({
         target: "http://localhost:5000",
         changeOrigin: true,
         secure: false,
-        rewrite: (path) => path.replace(/^\/api/, "/api"),
-        configure: (proxy, options) => {
-          proxy.on("error", (err, req, res) => {
-            console.log("Proxy error:", err);
-            res.writeHead(502, {
-              "Content-Type": "application/json",
-            });
-            res.end(
-              JSON.stringify({
-                error: "Backend server is not running",
-                message:
-                  "Please make sure the backend server is started on port 5000",
-              }),
-            );
-          });
-        },
       },
     },
   },
-   build: {
-    outDir: 'dist',
+  build: {
+    outDir: "dist",
     sourcemap: false,
     chunkSizeWarningLimit: 1000,
   },
-  define: {
-    'import.meta.env.VITE_API_URL': JSON.stringify(process.env.VITE_API_URL)
-  }
 });
