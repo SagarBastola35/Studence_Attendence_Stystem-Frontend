@@ -1,7 +1,13 @@
 {
-  "buildCommand": "rm -rf .vercel && npm run build",
+  "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "devCommand": "npm run dev",
   "installCommand": "npm install",
-  "framework": "vite"
+  "framework": "vite",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/"
+    }
+  ]
 }
