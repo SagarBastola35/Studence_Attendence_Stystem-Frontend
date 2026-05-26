@@ -1,12 +1,13 @@
+
 import React, { createContext, useState, useEffect } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 
-// TEMPORARY: Hardcode the production URL
+// DIRECT HARDCODE - NO ENVIRONMENT VARIABLES
 const API_URL = 'https://studence-attendence-stystem-backend-3.onrender.com/api';
 axios.defaults.baseURL = API_URL;
 
-console.log("🔐 AuthContext API URL:", API_URL);
+console.log("🔐 FORCED API URL:", API_URL);
 
 export const AuthContext = createContext();
 
