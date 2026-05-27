@@ -1,10 +1,9 @@
-
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 
 // DIRECT HARDCODE - NO ENVIRONMENT VARIABLES
-const API_URL = 'https://studence-attendence-stystem-backend-3.onrender.com/api';
+const API_URL = 'https://studence-attendence-stystem-backend-4.onrender.com/api';
 axios.defaults.baseURL = API_URL;
 
 console.log("🔐 FORCED API URL:", API_URL);
@@ -16,16 +15,16 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [token, setToken] = useState(localStorage.getItem("token"));
 
-  useEffect(() => {
-    if (token) {
-      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-      fetchUser();
-    } else {
-      setLoading(false);
-    }
-  }, [token]);
+  const logout = useCallback(() => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    delete axios.defaults.headers.common["Authorization"];
+    setUser(null);
+    setToken(null);
+    toast.success("Logged out successfully");
+  }, []);
 
-  const fetchUser = async () => {
+  const fetchUser = useCallback(async () => {
     try {
       const { data } = await axios.get("/auth/me");
       setUser(data);
@@ -35,7 +34,16 @@ export const AuthProvider = ({ children }) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [logout]);
+
+  useEffect(() => {
+    if (token) {
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      fetchUser();
+    } else {
+      setLoading(false);
+    }
+  }, [token, fetchUser]);
 
   const login = async (email, password) => {
     try {
@@ -82,15 +90,6 @@ export const AuthProvider = ({ children }) => {
       toast.error(error.response?.data?.message || "Registration failed");
       return false;
     }
-  };
-
-  const logout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    delete axios.defaults.headers.common["Authorization"];
-    setUser(null);
-    setToken(null);
-    toast.success("Logged out successfully");
   };
 
   return (
