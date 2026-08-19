@@ -37,7 +37,7 @@ const AddAttendance = () => {
   const fetchStudents = async () => {
     try {
       const { data } = await api.get("/users/students");
-      console.log("✅ Fetched students:", data);
+      console.log("Fetched students:", data);
       setStudents(data);
     } catch (error) {
       console.error("Error fetching students:", error);
@@ -48,7 +48,7 @@ const AddAttendance = () => {
   const fetchCourses = async () => {
     try {
       const { data } = await api.get("/users/courses");
-      console.log("✅ Fetched courses:", data);
+      console.log("Fetched courses:", data);
       setCourses(data);
     } catch (error) {
       console.error("Error fetching courses:", error);
@@ -57,7 +57,7 @@ const AddAttendance = () => {
   };
 
   const handleAttendanceChange = (studentId, status) => {
-    console.log(`📝 Marking student ${studentId} as ${status}`);
+    console.log(`Marking student ${studentId} as ${status}`);
     setAttendanceData((prev) => {
       const newData = { ...prev, [studentId]: status };
       console.log("Updated attendanceData:", newData);
@@ -66,7 +66,7 @@ const AddAttendance = () => {
   };
 
   const handleBulkMark = (status) => {
-    console.log(`📝 Bulk marking all as ${status}`);
+    console.log(`Bulk marking all as ${status}`);
     const newAttendance = {};
     filteredStudents.forEach((student) => {
       newAttendance[student._id] = status;
@@ -77,7 +77,7 @@ const AddAttendance = () => {
   };
 
   const handleSubmit = async () => {
-    console.log("🚀 Submitting attendance...");
+    console.log("Submitting attendance...");
     console.log("Selected course:", selectedCourse);
     console.log("Current attendanceData:", attendanceData);
     console.log("Students in state:", students);
@@ -116,17 +116,17 @@ const AddAttendance = () => {
         const student = students.find((s) => String(s._id) === String(studentId));
         
         if (!student) {
-          console.log(`❌ Student not found for ID: ${studentId}`);
+          console.log(`Student not found for ID: ${studentId}`);
           console.log(`Available student IDs: ${students.map(s => s._id).join(', ')}`);
           continue;
         }
         
         if (!status) {
-          console.log(`❌ No status for student: ${studentId}`);
+          console.log(`No status for student: ${studentId}`);
           continue;
         }
         
-        console.log(`✅ Found student: ${student.name} (${student.studentId})`);
+        console.log(`Found student: ${student.name} (${student.studentId})`);
         
         attendancePromises.push(
           api.post("/attendance/mark", {
@@ -139,7 +139,7 @@ const AddAttendance = () => {
         );
       }
 
-      console.log(`📊 Total promises to send: ${attendancePromises.length}`);
+      console.log(`Total promises to send: ${attendancePromises.length}`);
 
       if (attendancePromises.length === 0) {
         toast.error("No valid attendance records to submit");
@@ -148,7 +148,7 @@ const AddAttendance = () => {
       }
 
       const results = await Promise.all(attendancePromises);
-      console.log("✅ Results:", results);
+      console.log("Results:", results);
       
       const allSuccess = results.every((res) => res.data?.success === true);
 
@@ -159,7 +159,7 @@ const AddAttendance = () => {
         toast.error("Some attendance records failed to save");
       }
     } catch (error) {
-      console.error("❌ Error marking attendance:", error);
+      console.error("Error marking attendance:", error);
       console.error("Error response:", error.response?.data);
       
       if (error.response?.status === 401) {
