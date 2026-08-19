@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 const API_URL = 'https://studence-attendence-stystem-backend-4.onrender.com/api';
 axios.defaults.baseURL = API_URL;
 
-console.log("🔐 FORCED API URL:", API_URL);
+console.log("FORCED API URL:", API_URL);
 
 export const AuthContext = createContext();
 
